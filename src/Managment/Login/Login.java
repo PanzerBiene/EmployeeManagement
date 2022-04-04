@@ -2,6 +2,8 @@ package Managment.Login;
 
 import Managment.Employees.Employee;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -9,6 +11,34 @@ import java.util.Scanner;
 
 public class Login {
     private ArrayList<Employee> employees = new ArrayList<>();
+    private ArrayList<byte[]> passwords = new ArrayList<>();
+
+    public Login(String newpasswordFile)
+    {
+        createPasswordArray(newpasswordFile);
+
+    }
+    public void createPasswordArray(String newpasswordFile)
+    {
+        try
+        {
+            File passwordFile = new File(newpasswordFile);
+            Scanner reader = new Scanner(passwordFile);
+            while(reader.hasNextLine())
+            {
+                byte[] password = reader.nextLine().getBytes(StandardCharsets.UTF_8);
+                passwords.add(password);
+            }
+            reader.close();
+        }
+
+        catch (FileNotFoundException e)
+        {
+            System.out.println("unable to open file");
+            e.printStackTrace();
+        }
+
+    }
 
     public void menu() {
         int choice = 0;
@@ -67,7 +97,7 @@ public class Login {
 
     public void application(Employee loggedInEmployee)
     {
-
+        loggedInEmployee.Description();
     }
 
 }

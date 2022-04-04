@@ -96,4 +96,9 @@ public class Employee {
 
         this.employeePassword = md.digest(newPassword.getBytes(StandardCharsets.UTF_8));
     }
+
+    public void Description()
+    {
+        System.out.println("Name: " + login + " ID: "  + employeeID + "wage: " + wage + " type: " + employeeType);
+    }
 }
