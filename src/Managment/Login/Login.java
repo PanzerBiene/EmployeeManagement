@@ -14,15 +14,14 @@ import java.util.Scanner;
 
 public class Login {
     private ArrayList<Employee> employees = new ArrayList<>();
-    //private ArrayList<byte[]> passwords = new ArrayList<>();
-    private byte[] password = null;
 
-    public Login(String newemployeeFile)
+    public Login(String newfirstNameFile, String newlastNameFile, String newwageFile, String newtypeFile)
     {
-        CreateEmployees(newemployeeFile);
+        CreateEmployees(newfirstNameFile, newlastNameFile, newwageFile, newtypeFile);
     }
-    public void GetPassword(String newpasswordFile, int employeeID)
+    public byte[] GetPassword(String newpasswordFile, int employeeID)
     {
+        byte[] password = null;
         try
         {
             File passwordFile = new File(newpasswordFile);
@@ -42,58 +41,60 @@ public class Login {
             System.out.println("unable to open file");
             e.printStackTrace();
         }
-
+        return password;
     }
 
-    public void CreateEmployees(String newemployeeFile)
+    public void CreateEmployees(String newfirstNameFile, String newlastNameFile, String newwageFile, String newtypeFile)
     {
         try
         {
-            File employeeFile = new File(newemployeeFile);
-            Scanner reader = new Scanner(employeeFile);
+            File firstNameFile = new File(newfirstNameFile);
+            Scanner firstNameFileReader = new Scanner(firstNameFile);
+
+            File lastNameFile = new File(newlastNameFile);
+            Scanner lastNameFileReader = new Scanner(lastNameFile);
+
+            File wageFile = new File(newwageFile);
+            Scanner wageFileReader = new Scanner(wageFile);
+
+            File typeFile = new File(newtypeFile);
+            Scanner typeFileReader = new Scanner(typeFile);
+
             int employeenum = 0;
-            int lineNum = 1;
             //loops over the lines in the employees files
-            while(reader.hasNextLine())
+            while(firstNameFileReader.hasNextLine())
             {
                 String firstName = "";
                 String lastName = "";
                 double wage = 0.0;
                 EmployeeType employeeType = EmployeeType.EMPLOYEE;
 
-                //depending on the linenum get the data for an employee
-                if (lineNum % 4 == 1)
-                {
-                    //get employees firstname
-                    firstName = reader.nextLine();
-                }
-                else if (lineNum %4 == 2)
-                {
-                    //get empoyees lastname
-                    lastName = reader.nextLine();
-                }
-                else if (lineNum %4 == 3)
-                {
-                    //get employees wage
-                    wage = Double.parseDouble(reader.nextLine());
-                }
-                else if (lineNum %4 == 0)
-                {
-                    //get employees type
-                    employeeType = EmployeeType.valueOf(reader.nextLine());
-                    //increment the employee number
-                    employeenum +=1;
-                    //create the employee login using the firstname and lastname
-                    String login = firstName + "-" + lastName;
-                    //create a new employee
-                    Employee employee = new Employee(firstName, lastName, wage, employeenum, employeeType);
-                    //add employee to the array of employees
-                    employees.add(employee);
-                }
-                lineNum +=1;
+                //get employees firstname
+                firstName = firstNameFileReader.nextLine();
+
+                //get empoyees lastname
+                lastName = lastNameFileReader.nextLine();
+
+                //get employees wage
+                wage = Double.parseDouble(wageFileReader.nextLine());
+
+                //get employees type
+                employeeType = EmployeeType.valueOf(typeFileReader.nextLine());
+                //increment the employee number
+
+                //create the employee login using the firstname and lastname
+                String login = firstName + "-" + lastName;
+                //create a new employee
+                Employee employee = new Employee(firstName, lastName, wage, employeenum, employeeType);
+                //add employee to the array of employees
+                employees.add(employee);
+                employeenum +=1;
 
             }
-            reader.close();
+            firstNameFileReader.close();
+            lastNameFileReader.close();
+            wageFileReader.close();
+            typeFileReader.close();
         }
 
         catch (FileNotFoundException e)
@@ -178,7 +179,8 @@ public void writePasswordToFile(byte[] hashedPassword)
             try
             {
                 //get the employees hashed password
-                GetPassword("D:\\UNI\\EmployeeManagement\\Docs\\Passwords", employee.getEmployeeID());
+                byte[] password = GetPassword("D:\\UNI\\EmployeeManagement\\Docs\\Passwords", employee.getEmployeeID());
+
 
                 System.out.println("Please enter password: \n");
                 //get the users inputted password and hash it
@@ -190,6 +192,10 @@ public void writePasswordToFile(byte[] hashedPassword)
                     //declare password null so that the hash isnt stored in memory
                     password = null;
                     application(employee);
+                }
+                else
+                {
+                    System.out.println("Incorrect Password");
                 }
             }
             catch (NullPointerException | NoSuchAlgorithmException e)
