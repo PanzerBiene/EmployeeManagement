@@ -3,6 +3,7 @@ package Managment.Login;
 import Managment.Employees.Employee;
 
 import java.io.ObjectInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -37,7 +38,21 @@ public class Login {
             {
                 break;
             }
-            try
+            Employee employee = null;
+
+            for (int i=0; i < employees.size(); i++ )
+            {
+                if (employees.get(i).getLogin() == login)
+                {
+                    employee = employees.get(i);
+                }
+            }
+            assert employee != null;
+
+            byte[] password = scanner.next().getBytes(StandardCharsets.UTF_8);
+
+
+            if (password == employee.getEmployeePassword())
             {
 
             }
@@ -49,4 +64,10 @@ public class Login {
             //
         }
     }
+
+    public void application(Employee loggedInEmployee)
+    {
+
+    }
+
 }
