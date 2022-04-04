@@ -88,12 +88,16 @@ public class Employee {
     }
 
     public void setPassword(String newPassword) throws NoSuchAlgorithmException {
+
         SecureRandom random = new SecureRandom();
+        //create a salt for the hash
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         MessageDigest md = MessageDigest.getInstance("SHA-512");
+        //configure hash function with salt
         md.update(salt);
 
+        //hash the password
         this.employeePassword = md.digest(newPassword.getBytes(StandardCharsets.UTF_8));
     }
 
