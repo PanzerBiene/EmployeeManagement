@@ -1,0 +1,78 @@
+package Managment.Employees;
+
+public class Employee {
+    private int employeeID;
+    private String employeeFirstName;
+    private String employeeLastName;
+    private String login;
+    private double wage;
+    private EmployeeType employeeType;
+
+    public Employee(String FirstName, String LastName, double wage, int employeeID)
+    {
+        setEmployeeFirstName(FirstName);
+        setEmployeeLastName(LastName);
+        setLogin(FirstName, LastName);
+        setWage(wage);
+        setEmployeeID(employeeID);
+        setEmployeeType(EmployeeType.EMPLOYEE);
+    }
+
+    public Employee(String FirstName, String LastName, double wage, int employeeID, EmployeeType employeeType)
+    {
+    setEmployeeFirstName(FirstName);
+    setEmployeeLastName(LastName);
+    setLogin(FirstName, LastName);
+    setWage(wage);
+    setEmployeeID(employeeID);
+    setEmployeeType(employeeType);
+    }
+
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
+    }
+
+    public void setEmployeeID(int newemployeeID) {
+        this.employeeID = newemployeeID;
+    }
+
+    public void setEmployeeFirstName(String newemployeeFirstName) {
+        this.employeeFirstName = newemployeeFirstName;
+    }
+
+    public void setEmployeeLastName(String newemployeeLastName) {
+        this.employeeLastName = newemployeeLastName;
+    }
+
+    public void setLogin(String FirstName, String LastName) {
+        this.login = FirstName + "-" + LastName;
+    }
+
+    public void setWage(double newwage) {
+        this.wage = newwage;
+    }
+
+    public int getEmployeeID() {
+        return employeeID;
+    }
+
+    public String getEmployeeFirstName() {
+        return employeeFirstName;
+    }
+
+    public String getEmployeeLastName() {
+        return employeeLastName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public double getWage() {
+        return wage;
+    }
+
+    public EmployeeType getEmployeeType() {
+        return employeeType;
+    }
+}
