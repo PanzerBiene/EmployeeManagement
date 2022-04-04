@@ -2,8 +2,6 @@ package Managment;
 
 import Managment.Login.Login;
 
-import java.util.Scanner;
-
 public class ManagmentDriver {
     public static void main(String[] args) {
         //Scanner scanner = new Scanner(System.in);

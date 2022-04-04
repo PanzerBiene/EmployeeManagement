@@ -12,7 +12,6 @@ public class Employee {
     private String login;
     private double wage;
     private EmployeeType employeeType;
-    private byte[] employeePassword;
 
     public Employee(String FirstName, String LastName, double wage, int employeeID)
     {
@@ -82,24 +81,7 @@ public class Employee {
         return employeeType;
     }
 
-    public byte[] getEmployeePassword()
-    {
-        return employeePassword;
-    }
 
-    public void setPassword(String newPassword) throws NoSuchAlgorithmException {
-
-        SecureRandom random = new SecureRandom();
-        //create a salt for the hash
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        MessageDigest md = MessageDigest.getInstance("SHA-512");
-        //configure hash function with salt
-        md.update(salt);
-
-        //hash the password
-        this.employeePassword = md.digest(newPassword.getBytes(StandardCharsets.UTF_8));
-    }
 
     public void Description()
     {
