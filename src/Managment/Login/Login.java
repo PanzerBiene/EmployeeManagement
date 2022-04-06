@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,6 +21,7 @@ public class Login {
     {
         CreateEmployees(newfirstNameFile, newlastNameFile, newwageFile, newtypeFile);
     }
+
     public byte[] GetPassword(String newpasswordFile, int employeeID)
     {
         byte[] password = null;
@@ -31,7 +34,6 @@ public class Login {
                 //gets the hash from each line of the file
                 password = reader.nextLine().getBytes(StandardCharsets.UTF_8);
                 //adds each hashed password to the array of passwords
-
             }
             reader.close();
         }
@@ -60,7 +62,7 @@ public class Login {
             File typeFile = new File(newtypeFile);
             Scanner typeFileReader = new Scanner(typeFile);
 
-            int employeenum = 0;
+            int employeeNum = 0;
             //loops over the lines in the employees files
             while(firstNameFileReader.hasNextLine())
             {
@@ -72,7 +74,7 @@ public class Login {
                 //get employees firstname
                 firstName = firstNameFileReader.nextLine();
 
-                //get empoyees lastname
+                //get employees lastname
                 lastName = lastNameFileReader.nextLine();
 
                 //get employees wage
@@ -84,11 +86,14 @@ public class Login {
 
                 //create the employee login using the firstname and lastname
                 String login = firstName + "-" + lastName;
+
                 //create a new employee
-                Employee employee = new Employee(firstName, lastName, wage, employeenum, employeeType);
+                Employee employee = new Employee(firstName, lastName, wage, employeeNum, employeeType);
+
                 //add employee to the array of employees
                 employees.add(employee);
-                employeenum +=1;
+
+                employeeNum +=1;
 
             }
             firstNameFileReader.close();
@@ -107,20 +112,18 @@ public class Login {
 public byte[] hashPassword(String newPassword) throws NoSuchAlgorithmException {
 
     SecureRandom random = new SecureRandom();
+
     //create a salt for the hash
     byte[] salt = new byte[16];
+
     random.nextBytes(salt);
     MessageDigest md = MessageDigest.getInstance("SHA-512");
+
     //configure hash function with salt
     md.update(salt);
 
-    //hash the password
-    byte[] hashedPassword = md.digest(newPassword.getBytes(StandardCharsets.UTF_8));
-
-    //write to password file at required line
-
-
-    return hashedPassword;
+    //hash the password and return it
+    return md.digest(newPassword.getBytes(StandardCharsets.UTF_8));
 }
 
 public void writePasswordToFile(byte[] hashedPassword)
@@ -133,6 +136,10 @@ public void writePasswordToFile(byte[] hashedPassword)
         //loop while user doesnt want to exit
         while(choice != 2) {
             Scanner scanner = new Scanner(System.in);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+            LocalDateTime now = LocalDateTime.now();
+            System.out.println("~~~~~~~~~~~~~Employee Management Login~~~~~~~~~~~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~" + dtf.format(now) + "~~~~~~~~~~~~~~~~~~");
             System.out.println("Select an option: ");
             System.out.println("1. Login");
             System.out.println("2. Exit");
@@ -151,9 +158,12 @@ public void writePasswordToFile(byte[] hashedPassword)
         String login = "";
         while (true) {
             Scanner scanner = new Scanner(System.in);
+
             // get user input for username
             System.out.println("Please login (username is FirstName-LastName: \n");
+
             login = scanner.next();
+
             //check if the user wants to exit
             if (login.equals("exit"))
             {
